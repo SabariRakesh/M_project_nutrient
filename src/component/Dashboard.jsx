@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const [foodData, setFoodData] = useState({
@@ -13,6 +12,8 @@ const Dashboard = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [uploadMessage, setUploadMessage] = useState('');
+  const [uploadStatus, setUploadStatus] = useState(null); // "success" | "error" | null
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,6 +30,84 @@ const Dashboard = () => {
     }));
   };
 
+  const handleRemoveImage = () => {
+    setFoodData(prev => ({
+      ...prev,
+      image: null
+    }));
+  };
+
+  const handleImageUploadClick = async () => {
+    if (!foodData.image) return;
+
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+      const base64Image = reader.result.split(',')[1];
+
+      const payload = {
+        image: base64Image,
+        image_name: foodData.image.name
+      };
+
+      try {
+        setIsLoading(true);
+
+        const uploadResponse = await fetch('https://j0c0ztcen3.execute-api.eu-north-1.amazonaws.com/prod/upload-image', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        const uploadResult = await uploadResponse.json();
+        console.log("Upload Result: ", uploadResult);
+
+        if (!uploadResponse.ok) {
+          throw new Error(uploadResult.message || 'Upload failed');
+        }
+
+        setUploadMessage('Upload successful!');
+        setUploadStatus('success');
+
+        console.log("Calling prediction with image URL: ", uploadResult.object_url);
+
+        const predictionResponse = await fetch("https://3c4niu74luz7cwvqwzyy66z64u0jwyxa.lambda-url.eu-north-1.on.aws/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ image_url: uploadResult.object_url })
+        });
+
+        const predictionResult = await predictionResponse.json();
+        console.log("Prediction Result: ", predictionResult);
+
+        if (!predictionResponse.ok) {
+          throw new Error(predictionResult.message || 'Prediction failed');
+        }
+
+        setFoodData(prev => ({
+          ...prev,
+          foodName: (predictionResult.predicted_class_name || '').replace(/_/g, ' ')
+        }));
+        
+      } catch (error) {
+        console.error('Error during upload or prediction:', error);
+        setUploadMessage(error.message || 'Something went wrong!');
+        setUploadStatus('error');
+      }
+
+      setTimeout(() => {
+        setUploadMessage('');
+        setUploadStatus(null);
+        setIsLoading(false);
+      }, 4000);
+    };
+
+    reader.readAsDataURL(foodData.image);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -38,9 +117,9 @@ const Dashboard = () => {
       const response = await fetch("https://6tbid4o9l4.execute-api.eu-north-1.amazonaws.com/prod", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          food_name: foodData.foodName, 
-          size: foodData.size 
+        body: JSON.stringify({
+          food_name: foodData.foodName,
+          size: foodData.size
         }),
       });
 
@@ -49,14 +128,13 @@ const Dashboard = () => {
       }
 
       const nutrientData = await response.json();
-      
-      // Navigate to food details page with the data
-      navigate('/food-details', { 
-        state: { 
+
+      navigate('/food-details', {
+        state: {
           nutrientData,
           foodImage: foodData.image ? URL.createObjectURL(foodData.image) : null,
           quantity: foodData.quantity
-        } 
+        }
       });
 
     } catch (err) {
@@ -67,19 +145,22 @@ const Dashboard = () => {
   };
 
   return (
-    
     <div className={styles.dashboard}>
-      {/* Loading Overlay */}
+      {uploadMessage && (
+        <div className={`${styles.uploadStatusMessage} ${uploadStatus === 'success' ? styles.uploadSuccess : styles.uploadError}`}>
+          {uploadMessage}
+        </div>
+      )}
+
       {isLoading && (
         <div className={styles.loadingOverlay}>
           <div className={styles.loadingContent}>
             <img src="/note-noted.gif" alt="Loading..." className={styles.loadingGif} />
-            <p>Analyzing...</p>
+            <p>Predicting...</p>
           </div>
         </div>
       )}
 
-      {/* Error Message */}
       {error && (
         <div className={styles.errorMessage}>
           <p>Error: {error}</p>
@@ -87,12 +168,11 @@ const Dashboard = () => {
         </div>
       )}
 
-      {/* Header */}
       <header className={styles.header}>
         <div className={styles.logo} onClick={() => navigate('/')}>
           <img src="/logo.jpg" alt="Health Tracker Logo" />
         </div>
-        
+
         <nav className={styles.navbar}>
           <ul>
             <li onClick={() => navigate('/login')}>Login</li>
@@ -102,34 +182,39 @@ const Dashboard = () => {
         </nav>
       </header>
 
-      {/* Main Content */}
       <main className={styles.mainContent}>
         <div className={styles.foodFormContainer}>
           <h2>Track Your Food Intake</h2>
-          
+
           <form onSubmit={handleSubmit} className={styles.foodForm}>
-            {/* Image Upload */}
+
             <div className={styles.formGroup}>
               <label htmlFor="foodImage">Upload Food Image</label>
-              <input 
-                type="file" 
-                id="foodImage" 
-                accept="image/*" 
+              <input
+                type="file"
+                id="foodImage"
+                accept="image/*"
                 onChange={handleImageUpload}
                 className={styles.fileInput}
               />
+
               {foodData.image && (
                 <div className={styles.imagePreview}>
-                  <img 
-                    src={URL.createObjectURL(foodData.image)} 
-                    alt="Food preview" 
-                    className={styles.previewImage}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center' }}>
+                    <button type="button" className={styles.uploadButton} onClick={handleImageUploadClick}>
+                      Upload
+                    </button>
+                    <img
+                      src={URL.createObjectURL(foodData.image)}
+                      alt="Food preview"
+                      className={styles.previewImage}
+                    />
+                  </div>
+                  <span className={styles.closeButton} onClick={handleRemoveImage}>&times;</span>
                 </div>
               )}
             </div>
 
-            {/* Food Name */}
             <div className={styles.formGroup}>
               <label htmlFor="foodName">Food Name</label>
               <input
@@ -142,7 +227,6 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* Size Selection */}
             <div className={styles.formGroup}>
               <label htmlFor="size">Size</label>
               <select
@@ -158,7 +242,6 @@ const Dashboard = () => {
               </select>
             </div>
 
-            {/* Quantity */}
             <div className={styles.formGroup}>
               <label htmlFor="quantity">Quantity</label>
               <input
@@ -172,9 +255,8 @@ const Dashboard = () => {
               />
             </div>
 
-            {/* Submit Button */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className={styles.submitButton}
               disabled={isLoading}
             >
@@ -184,7 +266,6 @@ const Dashboard = () => {
         </div>
       </main>
     </div>
-    
   );
 };
 
