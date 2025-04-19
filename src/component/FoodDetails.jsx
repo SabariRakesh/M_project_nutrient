@@ -1,6 +1,8 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { ToastContainer, toast } from 'react-toastify'; // ✅ added
+import 'react-toastify/dist/ReactToastify.css'; // ✅ added
 import styles from './FoodDetails.module.css';
 
 const COLORS = {
@@ -37,6 +39,35 @@ const FoodDetails = () => {
   const getNutrientValue = (key, unit = '') => {
     if (!nutrients || !nutrients[key]) return `N/A ${unit}`;
     return `${(nutrients[key] * quantity).toFixed(2)} ${unit}`;
+  };
+
+  const handleStoreInDB = async () => {
+    const foodData = {
+      userId: "your-constant-user-id", // Replace with the constant userId (you can hardcode for now)
+      foodName: nutrientData.food || "Unknown Food",
+      nutrients: nutrientData.nutrients,
+      quantity: quantity,
+      imageURL: foodImage,
+    };
+
+    try {
+      const response = await fetch("https://uhiq7ice7i.execute-api.eu-north-1.amazonaws.com/prod/store-details", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ body: JSON.stringify(foodData) }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        toast.success(result.message || "Food details stored successfully!"); // ✅ toast success
+      } else {
+        toast.error(result.message || "Failed to store food details"); // ✅ toast error
+      }
+    } catch (error) {
+      toast.error("Error storing food details: " + error.message); // ✅ toast error
+    }
   };
 
   return (
@@ -80,6 +111,10 @@ const FoodDetails = () => {
         <div className={styles.nutrientCard}><h3>Calcium</h3><p>{getNutrientValue('Calcium, Ca', 'mg')}</p></div>
       </div>
 
+      <button onClick={handleStoreInDB} className={styles.storeButton}>
+        Store in DB
+      </button>
+
       <div className={styles.additionalInfo}>
         <h4>Additional Nutrients:</h4>
         <ul>
@@ -89,6 +124,20 @@ const FoodDetails = () => {
           <li>Vitamin A: {getNutrientValue('Vitamin A, RAE', 'mcg')}</li>
         </ul>
       </div>
+
+      {/* ✅ Toast container for showing success/error messages */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
     </div>
   );
 };

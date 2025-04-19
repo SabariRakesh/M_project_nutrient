@@ -100,3 +100,7 @@
   padding: 1rem;
   margin: 2rem 0;
 }
+.storeButton {
+  display: block;
+  margin: 0 auto;
+}

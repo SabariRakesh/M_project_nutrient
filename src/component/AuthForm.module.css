@@ -1,170 +1,174 @@
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-image: url("/public/shooting-star.gif");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;
-    background-size: cover;
-   font-family: 'Montserrat', sans-serif;
-  }
-  
-  .formContainer {
-    position: relative;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-                0 10px 10px rgba(0,0,0,0.22);
-  }
-  
-  .form {
-    position: absolute;
-    top: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 50px;
-    text-align: center;
-    transition: all 0.6s ease-in-out;
-  }
-  
-  .loginForm {
-    left: 0;
-    width: 50%;
-    z-index: 2;
-  }
-  
-  .signupForm {
-    left: 0;
-    width: 50%;
-    opacity: 0;
-    z-index: 1;
-  }
-  
-  input {
-    background: #eee;
-    border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    font-size: medium;
-    width: 100%;
-  }
-  
-  button {
-    border-radius: 20px;
-    border: 1px solid #ff4b2b;
-    background:#1e1e2f;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    margin-top: 10px;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: transform 80ms ease-in;
-    cursor: pointer;
-  }
-  
-  button:active {
-    transform: scale(0.95);
-  }
-  
-  button:focus {
-    outline: none;
-  }
-  
-  button.ghost {
-    background: transparent;
-    border-color: #fff;
-  }
-  
-  .overlayContainer {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: 100;
-  }
-  
-  .overlay {
-    background:#1e1e2f;
-    background: linear-gradient(to right, #1e1e2f, #4a2a6a, #8d374b);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    color: #fff;
-    position: relative;
-    left: -100%;
-    height: 100%;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-  }
-  
-  .overlayPanel {
-    position: absolute;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0 40px;
-    height: 100%;
-    width: 50%;
-    text-align: center;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-  }
-  
-  .overlayLeft {
-    transform: translateX(-20%);
-  }
-  
-  .overlayRight {
-    right: 0;
-    transform: translateX(0);
-  }
-  
-  /* Animation */
-  .formContainer.signupMode .loginForm {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  
-  .formContainer.signupMode .signupForm {
-    transform: translateX(100%);
-    opacity: 1;
-    z-index: 5;
-  }
-  
-  .formContainer.signupMode .overlayContainer {
-    transform: translateX(-100%);
-  }
-  
-  .formContainer.signupMode .overlay {
-    transform: translateX(50%);
-  }
-  
-  .formContainer.signupMode .overlayLeft {
-    transform: translateX(0);
-  }
-  
-  .formContainer.signupMode .overlayRight {
-    transform: translateX(20%);
-  }
+.container { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("/public/shooting-star.gif");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Montserrat', sans-serif;
+}
 
-  button:hover{
-    background-color:  rgb(199, 107, 107);
-    
-  }
+.formContainer {
+  position: relative;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
+              0 10px 10px rgba(0,0,0,0.22);
+}
+
+.form {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 50px;
+  text-align: center;
+  transition: all 0.6s ease-in-out;
+  background-color: white;
+}
+
+.loginForm {
+  left: 0;
+  z-index: 2;
+  opacity: 1;
+}
+
+.signupForm {
+  left: 0;
+  z-index: 1;
+  opacity: 0;
+}
+
+input {
+  background: #eee;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  font-size: medium;
+  width: 100%;
+}
+
+button {
+  border-radius: 20px;
+  border: 1px solid #ff4b2b;
+  background: #1e1e2f;
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 10px;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.ghost {
+  background: transparent;
+  border-color: #fff;
+}
+
+button:hover {
+  background-color: rgb(199, 107, 107);
+}
+
+.overlayContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+
+.overlay {
+  background: linear-gradient(to right, #1e1e2f, #4a2a6a, #8d374b);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlayPanel {
+  position: absolute;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 40px;
+  height: 100%;
+  width: 50%;
+  text-align: center;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+
+.overlayLeft {
+  transform: translateX(-20%);
+}
+
+.overlayRight {
+  right: 0;
+  transform: translateX(0);
+}
+
+/* Animation classes for mode toggle */
+.formContainer.signupMode .loginForm {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.formContainer.signupMode .signupForm {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+}
+
+.formContainer.signupMode .overlayContainer {
+  transform: translateX(-100%);
+}
+
+.formContainer.signupMode .overlay {
+  transform: translateX(50%);
+}
+
+.formContainer.signupMode .overlayLeft {
+  transform: translateX(0);
+}
+
+.formContainer.signupMode .overlayRight {
+  transform: translateX(20%);
+}
+
+/* ✅ Fix Login heading visibility */
+.loginForm h2 {
+  color: #1e1e2f;
+}

@@ -1,0 +1,300 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #0e0e10;
+    color: #f1f1f1;
+}
+
+/* Food History Wrapper */
+.food-history-wrapper {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #0e0e10;
+}
+
+/* Title */
+.title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #00ffc3;
+    font-weight: bold;
+    text-shadow: 0 0 5px #00ffc3;
+}
+
+/* Loading, Error, and No Data Messages */
+.loading,
+.error,
+.no-data {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #bbb;
+    margin-top: 2rem;
+}
+
+/* Table Container */
+.table-container {
+    overflow-x: auto;
+    background-color: #1a1a1d;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 0 12px rgba(0, 255, 195, 0.15);
+}
+
+/* Food History Table */
+.food-history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.food-history-table thead {
+    background-color: #111;
+}
+
+.food-history-table th,
+.food-history-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+.food-history-table th {
+    color: #00ffc3;
+    font-size: 0.95rem;
+}
+
+.food-history-table td {
+    color: #e2e2e2;
+    font-size: 0.9rem;
+}
+
+.food-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #00ffc3;
+    box-shadow: 0 0 10px rgba(0, 255, 195, 0.2);
+}
+
+/* Filters */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: #1f1f1f;
+    padding: 1rem;
+    border-radius: 8px;
+    color: white;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Nutrient Selection Filter */
+.filters .nutrient-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filters label {
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+}
+
+.filters input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* Nutrient Filters Styling */
+.filters select,
+.filters input {
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    min-width: 150px;
+}
+
+/* Date Range Filter */
+.filters .date-range {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.filters input[type="date"] {
+    min-width: 140px;
+}
+
+/* Adjustments for Date Range Filter */
+.filters input,
+.filters select {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .filters label {
+        flex-direction: column;
+    }
+
+    .filters input[type="date"] {
+        width: 100%;
+    }
+}
+
+/* Food History Table - Responsive Styles */
+.food-history-table th,
+.food-history-table td {
+    padding: 0.6rem;
+    font-size: 0.8rem;
+}
+
+.food-img {
+    width: 60px;
+    height: 60px;
+}
+
+.title {
+    font-size: 2rem;
+}
+
+/* Summary Panel */
+.summary-panel {
+    background-color: #1a1a1d;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    box-shadow: 0 0 10px rgba(0, 255, 195, 0.15);
+}
+
+.summary-panel h2 {
+    text-align: center;
+    color: #00ffc3;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-stats p {
+    font-size: 1rem;
+    color: #e2e2e2;
+    text-align: center;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart {
+    flex: 1;
+    background-color: #1a1a1d;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 255, 195, 0.15);
+}
+
+/* FoodHistoryPage */
+.food-history-wrapper {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.summary-panel {
+    margin-bottom: 30px;
+}
+
+.summary-stats p {
+    font-size: 1.2rem;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.chart {
+    width: 45%;
+}
+
+.food-history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.food-history-table th, .food-history-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.food-img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.loading, .error {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #ff5733;
+}
+
+/* Container for the entire filter section */
+.filter-container {
+    margin-bottom: 2rem;
+}
+
+.filter-container h3 {
+    color: #fff;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* Grid layout for nutrients */
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.8rem 1rem;
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+/* Label styling */
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #e2e2e2;
+    text-align: center;
+}
+
+/* Checkbox style */
+.filter-item input[type="checkbox"] {
+    margin-bottom: 4px;
+    transform: scale(1.1);
+    accent-color: #00ffc3;
+}
