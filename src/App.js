@@ -6,6 +6,7 @@ import Dashboard from './component/Dashboard';
 import FoodDetails from './component/FoodDetails';
 import FoodHistoryPage from './pages/FoodHistoryPage';
 import './index.css';
+import SuggestionsPage from './pages/SuggestionsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/food-details" element={<FoodDetails />} />
             <Route path="/user-history" element={<FoodHistoryPage />} />
+            <Route path="/suggestions" element={<SuggestionsPage/>} />
           </Routes>
         </div>
       </Router>

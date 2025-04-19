@@ -1,0 +1,136 @@
+.container {
+    padding: 3rem;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(145deg, #0d0d0d, #1c1c2b);
+    color: #fff;
+    max-width: 1000px;
+    margin: 3rem auto;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .heading {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #ffd700;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+  }
+  
+  .subheading {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    color: #9effff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-shadow: 0 0 5px rgba(0, 255, 255, 0.2);
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 3rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+  
+  .table th,
+  .table td {
+    padding: 1.2rem;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    font-size: 1rem;
+  }
+  
+  .table th {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    font-weight: 700;
+  }
+  
+  .table td {
+    color: #dcdcdc;
+  }
+  
+  .table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .recommendations {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+  }
+  
+  .foodCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    color: #fff;
+    padding: 20px;
+    border-radius: 16px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    text-align: center;
+  }
+  
+  .foodCard:hover {
+    background: rgba(0, 255, 255, 0.08);
+    transform: scale(1.03);
+    box-shadow: 0 8px 25px rgba(0, 255, 255, 0.1);
+  }
+  
+  .foodCard strong {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #ffd700;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+  
+  .foodCard span,
+  .foodCard .score {
+    font-size: 0.95rem;
+    color: #ddd;
+  }
+  
+  .foodCard .score {
+    font-weight: bold;
+    color: #00ffff;
+    margin-top: 0.5rem;
+    display: block;
+  }
+  
+  .emoji {
+    font-size: 1.2rem;
+  }
+  
+  @media (max-width: 768px) {
+    .heading {
+      font-size: 2.2rem;
+    }
+  
+    .subheading {
+      font-size: 1.3rem;
+    }
+  
+    .foodCard {
+      padding: 16px;
+    }
+  
+    .table th,
+    .table td {
+      font-size: 0.9rem;
+    }
+  }
+  
