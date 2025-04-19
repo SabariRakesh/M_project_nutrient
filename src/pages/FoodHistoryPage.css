@@ -298,3 +298,27 @@ body {
     transform: scale(1.1);
     accent-color: #00ffc3;
 }
+
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+}
+
+.suggestion-button {
+    background-color: #00ffc3;
+    color: #0e0e10;
+    font-weight: bold;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 255, 195, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.suggestion-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(0, 255, 195, 0.8);
+}
