@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [uploadMessage, setUploadMessage] = useState('');
   const [uploadStatus, setUploadStatus] = useState(null); // "success" | "error" | null
-
+  const [imageURLS3,setImageURLS3] =  useState('');
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFoodData(prev => ({
@@ -71,7 +71,7 @@ const Dashboard = () => {
         setUploadStatus('success');
 
         console.log("Calling prediction with image URL: ", uploadResult.object_url);
-
+        setImageURLS3(uploadResult.object_url);
         const predictionResponse = await fetch("https://3c4niu74luz7cwvqwzyy66z64u0jwyxa.lambda-url.eu-north-1.on.aws/predict", {
           method: "POST",
           headers: {
@@ -79,10 +79,10 @@ const Dashboard = () => {
           },
           body: JSON.stringify({ image_url: uploadResult.object_url })
         });
-
+        
         const predictionResult = await predictionResponse.json();
         console.log("Prediction Result: ", predictionResult);
-
+        
         if (!predictionResponse.ok) {
           throw new Error(predictionResult.message || 'Prediction failed');
         }
@@ -132,7 +132,7 @@ const Dashboard = () => {
       navigate('/food-details', {
         state: {
           nutrientData,
-          foodImage: foodData.image ? URL.createObjectURL(foodData.image) : null,
+          foodImage: foodData.image ? imageURLS3 : null,
           quantity: foodData.quantity
         }
       });

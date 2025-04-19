@@ -1,140 +1,167 @@
-import React, { useState } from 'react';
-import styles from './AuthForm.module.css';
-import { useNavigate } from 'react-router-dom';
+  import React, { useState } from 'react';
+  import styles from './AuthForm.module.css';
+  import { useNavigate } from 'react-router-dom';
+  import axios from 'axios';
 
-const AuthForm = () => {
-  const navigate = useNavigate();
-  const [isSignup, setIsSignup] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    weight: '',
-    height: '',
-    password: '',
-    confirmPassword: ''
-  });
+  const AuthForm = () => {
+    const navigate = useNavigate();
+    const [isSignup, setIsSignup] = useState(false);
+    const [formData, setFormData] = useState({
+      name: '',
+      age: '',
+      weight: '',
+      height: '',
+      password: '',
+      confirmPassword: ''
+    });
 
-  const handleLogin = () => {
-    if (formData.name.trim() && formData.password.trim()) {
-      navigate('/dashboard');
-    } else {
-      alert('Please fill in both Name and Password fields.');
-    }
-  };
-  
+    const handleSignup = async () => {
+      if (formData.password !== formData.confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+      try {
+        const response = await axios.post('https://jco78qenpe.execute-api.eu-north-1.amazonaws.com/prod/signup', {
+          name: formData.name.trim(),
+          age: parseInt(formData.age),
+          weight: parseFloat(formData.weight),
+          height: parseFloat(formData.height),
+          password: formData.password
+        });
 
-  return (
-    <div className={styles.container}>
-      <div className={`${styles.formContainer} ${isSignup ? styles.signupMode : ''}`}>
-        {/* Login Form */}
-        <div className={`${styles.form} ${styles.loginForm}`}>
-          <h2>Login</h2>
-          <input 
-            type="text" 
-            name="name"
-            placeholder="name" 
-            value={formData.email}
-            onChange={handleChange}
-          />
-          <input 
-            type="password" 
-            name="password"
-            placeholder="Password" 
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <button onClick={handleLogin}>Login</button>
+        if (response.status === 200) {
+          alert('Signup successful');
+          navigate('/dashboard');  // Redirect to dashboard after successful signup
+        } else {
+          alert(response.data.message);
+        }
+      } catch (error) {
+        console.error(error);
+        alert(error.response?.data?.message || 'An error occurred. Please try again.');
+      }
+    };
 
-        </div>
+    const handleLogin = () => {
+      if (formData.name.trim() && formData.password.trim()) {
+        navigate('/dashboard');
+      } else {
+        alert('Please fill in both Name and Password fields.');
+      }
+    };
 
-        {/* Signup Form */}
-        <div className={`${styles.form} ${styles.signupForm}`}>
-          <h2>Sign Up</h2>
-          <input 
-            type="text" 
-            name="name"
-            placeholder="Full Name" 
-            value={formData.name}
-            onChange={handleChange}
-          />
-          <input 
-            type="number" 
-            name="age"
-            placeholder="Age" 
-            value={formData.age}
-            onChange={handleChange}
-            min="1"
-          />
-          <input 
-            type="number" 
-            name="weight"
-            placeholder="Weight (kg)" 
-            value={formData.weight}
-            onChange={handleChange}
-            min="1"
-            step="0.1"
-          />
-          <input 
-            type="number" 
-            name="height"
-            placeholder="Height (cm)" 
-            value={formData.height}
-            onChange={handleChange}
-            min="1"
-          />
-          <input 
-            type="password" 
-            name="password"
-            placeholder="Password" 
-            value={formData.password}
-            onChange={handleChange}
-          />
-          <input 
-            type="password" 
-            name="confirmPassword"
-            placeholder="Confirm Password" 
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
-          <button>Sign Up</button>
-        </div>
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    };
 
-        {/* Overlay */}
-        <div className={styles.overlayContainer}>
-          <div className={styles.overlay}>
-            <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
-              <h2>Welcome Back!</h2>
-              <p>Already have an account?</p>
-              <button 
-                className={styles.ghost} 
-                onClick={() => setIsSignup(false)}
-              >
-                Login
-              </button>
-            </div>
-            <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
-              <h2>Hello, Friend!</h2>
-              <p>Start your fitness journey with us</p>
-              <button 
-                className={styles.ghost} 
-                onClick={() => setIsSignup(true)}
-              >
-                Sign Up
-              </button>
+    return (
+      <div className={styles.container}>
+        <div className={`${styles.formContainer} ${isSignup ? styles.signupMode : ''}`}>
+          
+          {/* Login Form */}
+          <div className={`${styles.form} ${styles.loginForm}`}>
+            <h2>Login</h2>
+            <input 
+              type="text" 
+              name="name"
+              placeholder="Name" 
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <input 
+              type="password" 
+              name="password"
+              placeholder="Password" 
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <button onClick={handleLogin}>Login</button>
+          </div>
+
+          {/* Signup Form */}
+          <div className={`${styles.form} ${styles.signupForm}`}>
+            <h2>Sign Up</h2>
+            <input 
+              type="text" 
+              name="name"
+              placeholder="Full Name" 
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <input 
+              type="number" 
+              name="age"
+              placeholder="Age" 
+              value={formData.age}
+              onChange={handleChange}
+              min="1"
+            />
+            <input 
+              type="number" 
+              name="weight"
+              placeholder="Weight (kg)" 
+              value={formData.weight}
+              onChange={handleChange}
+              min="1"
+              step="0.1"
+            />
+            <input 
+              type="number" 
+              name="height"
+              placeholder="Height (cm)" 
+              value={formData.height}
+              onChange={handleChange}
+              min="1"
+            />
+            <input 
+              type="password" 
+              name="password"
+              placeholder="Password" 
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <input 
+              type="password" 
+              name="confirmPassword"
+              placeholder="Confirm Password" 
+              value={formData.confirmPassword}
+              onChange={handleChange}
+            />
+            <button onClick={handleSignup}>Sign Up</button>
+          </div>
+
+          {/* Overlay */}
+          <div className={styles.overlayContainer}>
+            <div className={styles.overlay}>
+              <div className={`${styles.overlayPanel} ${styles.overlayLeft}`}>
+                <h2>Welcome Back!</h2>
+                <p>Already have an account?</p>
+                <button 
+                  className={styles.ghost} 
+                  onClick={() => setIsSignup(false)}
+                >
+                  Login
+                </button>
+              </div>
+              <div className={`${styles.overlayPanel} ${styles.overlayRight}`}>
+                <h2>Hello, Friend!</h2>
+                <p>Start your fitness journey with us</p>
+                <button 
+                  className={styles.ghost} 
+                  onClick={() => setIsSignup(true)}
+                >
+                  Sign Up
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default AuthForm;
+  export default AuthForm;
