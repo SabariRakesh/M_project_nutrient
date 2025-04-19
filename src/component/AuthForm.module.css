@@ -172,3 +172,35 @@ button:hover {
 .loginForm h2 {
   color: #1e1e2f;
 }
+.toast {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  z-index: 999;
+  animation: fadeInOut 3s ease-in-out forwards;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  font-size: 14px;
+  text-align: center;
+}
+
+.toast.error {
+  background-color: #ff4b2b;
+  color: white;
+}
+
+.toast.success {
+  background-color: #28a745;
+  color: white;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, -20px); }
+}
+

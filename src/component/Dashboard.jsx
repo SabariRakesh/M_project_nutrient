@@ -14,7 +14,9 @@ const Dashboard = () => {
   const [error, setError] = useState(null);
   const [uploadMessage, setUploadMessage] = useState('');
   const [uploadStatus, setUploadStatus] = useState(null); // "success" | "error" | null
-  const [imageURLS3,setImageURLS3] =  useState('');
+  const [imageURLS3, setImageURLS3] = useState('');
+  const [submitLoading, setSubmitLoading] = useState(false); // New state for submit button
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFoodData(prev => ({
@@ -24,9 +26,10 @@ const Dashboard = () => {
   };
 
   const handleImageUpload = (e) => {
+    const file = e.target.files[0];
     setFoodData(prev => ({
       ...prev,
-      image: e.target.files[0]
+      image: file
     }));
   };
 
@@ -35,6 +38,9 @@ const Dashboard = () => {
       ...prev,
       image: null
     }));
+
+    // Resetting file input value manually to ensure "Choose File" text shows
+    document.getElementById('foodImage').value = '';
   };
 
   const handleImageUploadClick = async () => {
@@ -69,9 +75,8 @@ const Dashboard = () => {
 
         setUploadMessage('Upload successful!');
         setUploadStatus('success');
-
-        console.log("Calling prediction with image URL: ", uploadResult.object_url);
         setImageURLS3(uploadResult.object_url);
+
         const predictionResponse = await fetch("https://3c4niu74luz7cwvqwzyy66z64u0jwyxa.lambda-url.eu-north-1.on.aws/predict", {
           method: "POST",
           headers: {
@@ -79,10 +84,10 @@ const Dashboard = () => {
           },
           body: JSON.stringify({ image_url: uploadResult.object_url })
         });
-        
+
         const predictionResult = await predictionResponse.json();
         console.log("Prediction Result: ", predictionResult);
-        
+
         if (!predictionResponse.ok) {
           throw new Error(predictionResult.message || 'Prediction failed');
         }
@@ -98,11 +103,11 @@ const Dashboard = () => {
         setUploadStatus('error');
       }
 
+      setIsLoading(false);
       setTimeout(() => {
         setUploadMessage('');
         setUploadStatus(null);
-        setIsLoading(false);
-      }, 4000);
+      }, 3000); // Message fades out after 3 seconds
     };
 
     reader.readAsDataURL(foodData.image);
@@ -110,7 +115,7 @@ const Dashboard = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    setSubmitLoading(true); // Show "Analysing..." message
     setError(null);
 
     try {
@@ -140,7 +145,7 @@ const Dashboard = () => {
     } catch (err) {
       setError(err.message);
     } finally {
-      setIsLoading(false);
+      setSubmitLoading(false); // Hide "Analysing..." message after submission is done
     }
   };
 
@@ -161,6 +166,15 @@ const Dashboard = () => {
         </div>
       )}
 
+      {submitLoading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingContent}>
+            <img src="/note-noted.gif" alt="Loading..." className={styles.loadingGif} />
+            <p>Analysing...</p>
+          </div>
+        </div>
+      )}
+
       {error && (
         <div className={styles.errorMessage}>
           <p>Error: {error}</p>
@@ -175,7 +189,7 @@ const Dashboard = () => {
 
         <nav className={styles.navbar}>
           <ul>
-            <li onClick={() => navigate('/login')}>Login</li>
+            <li onClick={() => navigate('/login')}>Logout</li>
             <li onClick={() => navigate('/user-history')}>User History</li>
             <li onClick={() => navigate('/about')}>About</li>
           </ul>
@@ -201,8 +215,8 @@ const Dashboard = () => {
               {foodData.image && (
                 <div className={styles.imagePreview}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', justifyContent: 'center' }}>
-                    <button type="button" className={styles.uploadButton} onClick={handleImageUploadClick}>
-                      Upload
+                    <button type="button" className={styles.uploadButton} onClick={handleImageUploadClick} disabled={isLoading}>
+                      {isLoading ? 'Uploading...' : 'Upload'}
                     </button>
                     <img
                       src={URL.createObjectURL(foodData.image)}
@@ -258,9 +272,9 @@ const Dashboard = () => {
             <button
               type="submit"
               className={styles.submitButton}
-              disabled={isLoading}
+              disabled={submitLoading}
             >
-              {isLoading ? 'Processing...' : 'Submit Food Details'}
+              {submitLoading ? 'Analysing...' : 'Submit Food Details'}
             </button>
           </form>
         </div>
