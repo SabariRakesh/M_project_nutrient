@@ -1,15 +1,16 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { ToastContainer, toast } from 'react-toastify'; // ✅ added
-import 'react-toastify/dist/ReactToastify.css'; // ✅ added
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from './FoodDetails.module.css';
+import { useUser } from '../context/UserContext';  // Import useUser hook
 
 const COLORS = {
   Fat: '#e74c3c',
   Protein: '#2ecc71',
   Carbs: '#3498db',
-  Fiber: '#6433ff ',
+  Fiber: '#6433ff',
   Sugar: '#f1c40f',
   Iron: '#e67e22',
   Calcium: '#8e44ad',
@@ -19,6 +20,8 @@ const FoodDetails = () => {
   const { state } = useLocation();
   const { nutrientData = {}, foodImage, quantity = 1 } = state || {};
   const nutrients = nutrientData.nutrients || {};
+
+  const { userId } = useUser();  // Access userId from context
 
   const getValue = (key) => {
     return nutrients[key] ? nutrients[key] * quantity : 0;
@@ -43,13 +46,13 @@ const FoodDetails = () => {
 
   const handleStoreInDB = async () => {
     const foodData = {
-      userId: "your-constant-user-id", // Replace with the constant userId (you can hardcode for now)
-      foodName: nutrientData.food || "Unknown Food",
+      userId: userId,  // Use userId from context
+      foodName: nutrientData.food || 'Unknown Food',
       nutrients: nutrientData.nutrients,
       quantity: quantity,
       imageURL: foodImage,
     };
-
+    console.log(userId);
     try {
       const response = await fetch("https://uhiq7ice7i.execute-api.eu-north-1.amazonaws.com/prod/store-details", {
         method: "POST",
@@ -61,12 +64,12 @@ const FoodDetails = () => {
 
       const result = await response.json();
       if (response.ok) {
-        toast.success(result.message || "Food details stored successfully!"); // ✅ toast success
+        toast.success(result.message || "Food details stored successfully!");
       } else {
-        toast.error(result.message || "Failed to store food details"); // ✅ toast error
+        toast.error(result.message || "Failed to store food details");
       }
     } catch (error) {
-      toast.error("Error storing food details: " + error.message); // ✅ toast error
+      toast.error("Error storing food details: " + error.message);
     }
   };
 
@@ -125,7 +128,6 @@ const FoodDetails = () => {
         </ul>
       </div>
 
-      {/* ✅ Toast container for showing success/error messages */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
