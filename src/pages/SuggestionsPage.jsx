@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './SuggestionsPage.module.css';
 import { recommendFoods } from '../utils/greedyRecommender';
 import foodList from '../data/foods.json';
+import { useUser } from '../context/UserContext';
 
+// Daily Recommended Intake (RDI)
 const RDI = {
   "Energy": 2000,
   "Protein": 50,
@@ -13,10 +15,24 @@ const RDI = {
   "Sodium, Na": 2300
 };
 
+// Optional: Normalize keys if data keys differ from RDI
+const NUTRIENT_KEY_MAP = {
+  "energy": "Energy",
+  "energy_kcal": "Energy",
+  "protein": "Protein",
+  "carbs": "Carbohydrate, by difference",
+  "carbohydrate": "Carbohydrate, by difference",
+  "fiber": "Fiber, total dietary",
+  "fat": "Total lipid (fat)",
+  "sugars": "Total Sugars",
+  "sodium": "Sodium, Na"
+};
+
 const SuggestionsPage = () => {
   const [deficiencies, setDeficiencies] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [numDays, setNumDays] = useState(0);
+  const { userId } = useUser();
 
   useEffect(() => {
     fetchFoodHistory();
@@ -27,17 +43,21 @@ const SuggestionsPage = () => {
       const response = await fetch('https://2yek7wb68j.execute-api.eu-north-1.amazonaws.com/prod/food-history', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 'user123' }),
+        body: JSON.stringify({ userId }),
       });
 
       const data = await response.json();
       const daysCount = getDistinctDates(data);
       setNumDays(daysCount);
+      console.log("Data : ", data);
+      console.log("Days count : ", daysCount);
 
       const deficienciesFound = calculateNutrientDeficiencies(data, daysCount);
       setDeficiencies(deficienciesFound);
+      console.log("Deficiencies found: ", deficienciesFound);
 
       const topFoods = recommendFoods(deficienciesFound, foodList);
+      console.log("Top foods: ", topFoods);
       setRecommendations(topFoods);
     } catch (error) {
       console.error('Error fetching food history:', error);
@@ -58,12 +78,15 @@ const SuggestionsPage = () => {
     const totals = {};
 
     data.forEach(entry => {
-      for (const [nutrient, value] of Object.entries(entry.nutrients)) {
+      for (const [key, value] of Object.entries(entry.nutrients)) {
+        const nutrient = NUTRIENT_KEY_MAP[key] || key;
         if (RDI[nutrient]) {
           totals[nutrient] = (totals[nutrient] || 0) + value;
         }
       }
     });
+
+    console.log("Total nutrients collected:", totals);
 
     const deficiencies = [];
 
@@ -71,6 +94,8 @@ const SuggestionsPage = () => {
       const intake = totals[nutrient] || 0;
       const totalRDI = rdi * numberOfDays;
       const percentage = ((intake / totalRDI) * 100).toFixed(0);
+
+      console.log(`${nutrient}: Intake = ${intake.toFixed(1)}, RDI = ${totalRDI}, % = ${percentage}`);
 
       if (intake < totalRDI * 0.7) {
         deficiencies.push({
