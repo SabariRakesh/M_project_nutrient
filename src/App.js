@@ -7,6 +7,7 @@ import FoodDetails from './component/FoodDetails';
 import FoodHistoryPage from './pages/FoodHistoryPage';
 import './index.css';
 import SuggestionsPage from './pages/SuggestionsPage';
+import About from './component/About';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/food-details" element={<FoodDetails />} />
             <Route path="/user-history" element={<FoodHistoryPage />} />
             <Route path="/suggestions" element={<SuggestionsPage/>} />
+            <Route path="/about" element={<About/>} />
           </Routes>
         </div>
       </Router>

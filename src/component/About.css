@@ -1,0 +1,89 @@
+.aboutContainer {
+    background-color: var(--bg-dark);
+    color: var(--text-secondary);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    max-width: 1000px;
+    margin: 2rem auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .aboutContainer h1 {
+    color: var(--accent-primary);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .missionStatement {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+  
+  .aboutContainer h2 {
+    color: var(--accent-secondary);
+    font-size: 1.8rem;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .aboutContainer p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+  
+  .aboutContainer a {
+    color: var(--accent-primary);
+    text-decoration: none;
+  }
+  
+  .aboutContainer a:hover {
+    text-decoration: underline;
+  }
+  
+  .aboutContainer ul {
+    list-style-type: disc;
+    margin-left: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .aboutContainer li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .testimonial {
+    background-color: var(--bg-card);
+    border-left: 4px solid var(--accent-primary);
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+    font-style: italic;
+  }
+  
+  .whyChooseUs, .techStack {
+    margin-left: 1.5rem;
+  }
+  
+  .howItWorks {
+    margin-left: 1.5rem;
+  }
+  
+  @media (max-width: 768px) {
+    .aboutContainer {
+      padding: 1.5rem;
+    }
+  
+    .aboutContainer h1 {
+      font-size: 2rem;
+    }
+  
+    .aboutContainer h2 {
+      font-size: 1.4rem;
+    }
+  }
+  
+
+
