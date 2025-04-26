@@ -4,12 +4,16 @@ import './FoodHistoryPage.css';
 import { Bar } from 'react-chartjs-2';
 import Chart from 'chart.js/auto';
 import { useUser } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
+import styles from '../component/Dashboard.module.css';
+
 
 const FoodHistoryPage = () => {
   const [foodHistory, setFoodHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userId } = useUser();
+  const navigate = useNavigate();
 
   const [selectedNutrients, setSelectedNutrients] = useState([
     'Total lipid (fat)', 'Protein', 'Carbohydrate, by difference',
@@ -92,7 +96,22 @@ const FoodHistoryPage = () => {
   if (error) return <div className="error">{error}</div>;
 
   return (
-    <div className="food-history-wrapper">
+    <div className="full">
+      <header className={styles.header}>
+        <div className={styles.logo} onClick={() => navigate('/')}>
+          <img src="/logo.jpg" alt="Health Tracker Logo" />
+        </div>
+
+        <nav className={styles.navbar}>
+          <ul>
+            <li onClick={() => navigate('/dashboard')}>Dasboard</li>
+            <li onClick={() => navigate('/user-history')}>User History</li>
+            <li onClick={() => navigate('/about')}>About</li>
+            <li onClick={() => navigate('/login')}>Logout</li>
+          </ul>
+        </nav>
+      </header>
+      <div className="food-history-wrapper">
       <div className="top-bar">
   <button className="suggestion-button" onClick={() => window.location.href = '/suggestions'}>
     💡 Get Food Suggestions
@@ -160,6 +179,7 @@ const FoodHistoryPage = () => {
           </tbody>
         </table>
       </div>
+    </div>
     </div>
   );
 };

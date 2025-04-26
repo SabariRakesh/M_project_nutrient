@@ -104,3 +104,41 @@
   display: block;
   margin: 0 auto;
 }
+
+/* Header Styles */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--bg-dark);
+  border-bottom: 1px solid var(--border-color);
+  margin-top:-35px;
+  margin-bottom:20px;
+}
+
+.logo img {
+  height: 60px;
+}
+
+/* Navigation Bar */
+.navbar ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  color: var(--text-secondary);
+}
+
+.navbar li:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
