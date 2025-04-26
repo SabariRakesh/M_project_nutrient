@@ -131,26 +131,31 @@ const navigate = useNavigate();
       <h2 className={styles.heading}>💡 Suggestions</h2>
 
       <h3 className={styles.subheading}>Deficiency Summary</h3>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Nutrient</th>
-            <th>Avg Intake</th>
-            <th>RDI</th>
-            <th>% of RDI</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deficiencies.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.name}</td>
-              <td>{item.intake}</td>
-              <td>{item.rdi}</td>
-              <td>{item.percentage}% ⚠️</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+{deficiencies.length === 0 ? (
+  <p className={styles.message}>✅ You are alright. No deficiencies found!</p>
+) : (
+  <table className={styles.table}>
+    <thead>
+      <tr>
+        <th>Nutrient</th>
+        <th>Avg Intake</th>
+        <th>RDI</th>
+        <th>% of RDI</th>
+      </tr>
+    </thead>
+    <tbody>
+      {deficiencies.map((item, idx) => (
+        <tr key={idx}>
+          <td>{item.name}</td>
+          <td>{item.intake}</td>
+          <td>{item.rdi}</td>
+          <td>{item.percentage}% ⚠️</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
 
       {recommendations.length > 0 && (
         <>
