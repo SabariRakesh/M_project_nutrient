@@ -3,6 +3,7 @@ import styles from './SuggestionsPage.module.css';
 import { recommendFoods } from '../utils/greedyRecommender';
 import foodList from '../data/foods.json';
 import { useUser } from '../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 // Daily Recommended Intake (RDI)
 const RDI = {
@@ -37,7 +38,7 @@ const SuggestionsPage = () => {
   useEffect(() => {
     fetchFoodHistory();
   }, []);
-
+const navigate = useNavigate();
   const fetchFoodHistory = async () => {
     try {
       const response = await fetch('https://2yek7wb68j.execute-api.eu-north-1.amazonaws.com/prod/food-history', {
@@ -111,30 +112,50 @@ const SuggestionsPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="full">
+      <header className={styles.header}>
+        <div className={styles.logo} onClick={() => navigate('/')}>
+          <img src="/logo.jpg" alt="Health Tracker Logo" />
+        </div>
+
+        <nav className={styles.navbar}>
+          <ul>
+            <li onClick={() => navigate('/dashboard')}>Dasboard</li>
+            <li onClick={() => navigate('/user-history')}>User History</li>
+            <li onClick={() => navigate('/about')}>About</li>
+            <li onClick={() => navigate('/login')}>Logout</li>
+          </ul>
+        </nav>
+      </header>
+      <div className={styles.container}>
       <h2 className={styles.heading}>💡 Suggestions</h2>
 
       <h3 className={styles.subheading}>Deficiency Summary</h3>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Nutrient</th>
-            <th>Avg Intake</th>
-            <th>RDI</th>
-            <th>% of RDI</th>
-          </tr>
-        </thead>
-        <tbody>
-          {deficiencies.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.name}</td>
-              <td>{item.intake}</td>
-              <td>{item.rdi}</td>
-              <td>{item.percentage}% ⚠️</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+{deficiencies.length === 0 ? (
+  <p className={styles.message}>✅ You are alright. No deficiencies found!</p>
+) : (
+  <table className={styles.table}>
+    <thead>
+      <tr>
+        <th>Nutrient</th>
+        <th>Avg Intake</th>
+        <th>RDI</th>
+        <th>% of RDI</th>
+      </tr>
+    </thead>
+    <tbody>
+      {deficiencies.map((item, idx) => (
+        <tr key={idx}>
+          <td>{item.name}</td>
+          <td>{item.intake}</td>
+          <td>{item.rdi}</td>
+          <td>{item.percentage}% ⚠️</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
 
       {recommendations.length > 0 && (
         <>
@@ -150,6 +171,7 @@ const SuggestionsPage = () => {
           </ul>
         </>
       )}
+    </div>
     </div>
   );
 };

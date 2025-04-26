@@ -189,9 +189,10 @@ const Dashboard = () => {
 
         <nav className={styles.navbar}>
           <ul>
-            <li onClick={() => navigate('/login')}>Logout</li>
+            <li onClick={() => navigate('/dashboard')}>Dasboard</li>
             <li onClick={() => navigate('/user-history')}>User History</li>
             <li onClick={() => navigate('/about')}>About</li>
+            <li onClick={() => navigate('/login')}>Logout</li>
           </ul>
         </nav>
       </header>

@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './FoodDetails.module.css';
 import { useUser } from '../context/UserContext';  // Import useUser hook
-
+import { useNavigate } from 'react-router-dom';
 const COLORS = {
   Fat: '#e74c3c',
   Protein: '#2ecc71',
@@ -43,7 +43,7 @@ const FoodDetails = () => {
     if (!nutrients || !nutrients[key]) return `N/A ${unit}`;
     return `${(nutrients[key] * quantity).toFixed(2)} ${unit}`;
   };
-
+  const navigate = useNavigate();
   const handleStoreInDB = async () => {
     const foodData = {
       userId: userId,  // Use userId from context
@@ -75,6 +75,20 @@ const FoodDetails = () => {
 
   return (
     <div className={styles.container}>
+      <header className={styles.header}>
+        <div className={styles.logo} onClick={() => navigate('/')}>
+          <img src="/logo.jpg" alt="Health Tracker Logo" />
+        </div>
+
+        <nav className={styles.navbar}>
+          <ul>
+            <li onClick={() => navigate('/dashboard')}>Dasboard</li>
+            <li onClick={() => navigate('/user-history')}>User History</li>
+            <li onClick={() => navigate('/about')}>About</li>
+            <li onClick={() => navigate('/login')}>Logout</li>
+          </ul>
+        </nav>
+      </header>
       <h2 className={styles.title}>Nutritional Information</h2>
 
       <div className={styles.foodHeader}>
